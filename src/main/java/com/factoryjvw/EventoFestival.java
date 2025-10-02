@@ -2,6 +2,8 @@ package com.factoryjvw;
 
 public class EventoFestival implements IEvento {
 
+    public EventoFestival() { }
+
     @Override
     public String iniciarPromocao() {
         return "Promoção de Festival iniciada: Venda de ingressos e equipe de marketing acionada.";

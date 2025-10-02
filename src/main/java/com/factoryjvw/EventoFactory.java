@@ -1,5 +1,7 @@
 package com.factoryjvw;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class EventoFactory {
 
     public static IEvento criarEvento(String tipoEvento) {
@@ -7,22 +9,21 @@ public class EventoFactory {
         Object objeto = null;
 
         try {
-            String nomeClasse = "com.factoryjvw.Evento" + tipoEvento;
-            classe = Class.forName(nomeClasse);
-
+            classe = Class.forName("com.factoryjvw." + tipoEvento);
             objeto = classe.getDeclaredConstructor().newInstance();
 
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Tipo de Evento inexistente: " + tipoEvento);
 
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Erro ao criar evento: " + ex.getMessage());
-        }
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        throw new IllegalArgumentException("Erro ao instanciar o Evento");
+    }
 
-        if (!(objeto instanceof IEvento)) {
-            throw new IllegalArgumentException("Classe do evento não implementa IEvento.");
+        if (objeto == null || !(objeto instanceof IEvento)) {
+            throw new IllegalArgumentException("Classe do evento não implementa IEvento");
         }
 
         return (IEvento) objeto;
     }
+
 }
